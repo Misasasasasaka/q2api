@@ -189,31 +189,6 @@
 <body>
   <div class="container">
     <h1>v2 前端控制台</h1>
-    <div class="panel">
-      <div class="row">
-        <div class="field" style="max-width:420px">
-          <label>API Base</label>
-          <input id="base" value="/" />
-        </div>
-        <div class="field" style="max-width:520px">
-          <label>Authorization（OpenAI风格白名单；仅授权用途；OPENAI_KEYS 为空时可留空）</label>
-          <input id="auth" placeholder="自定义Key（可留空：开发模式）" />
-        </div>
-        <div class="field" style="max-width:300px">
-          <label>健康检查</label>
-          <div class="row">
-            <button class="btn-secondary" onclick="ping()">Ping</button>
-            <div id="health" class="chip">未检测</div>
-          </div>
-        </div>
-      </div>
-      <div class="sep"></div>
-      <div class="row">
-        <div class="chip mono">OPENAI_KEYS="key1,key2"（白名单，仅授权，与账号无关）</div>
-        <div class="chip mono">当 OPENAI_KEYS 为空或未配置：开发模式，不校验 Authorization</div>
-        <div class="chip mono">账号选择：从所有“启用”的账号中随机选择</div>
-      </div>
-    </div>
 
     <div class="tabs">
       <button class="tab active" onclick="switchTab('accounts')">账号管理</button>

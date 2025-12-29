@@ -573,9 +573,10 @@ async def claude_messages(
     Claude-compatible messages endpoint.
     """
     # 1. Convert request
-    requested_conversation_id = req.conversation_id or x_conversation_id
+    # Always generate a new conversation_id like amq2api does
+    # Using the same conversation_id can cause Amazon Q to return cached/stale data
     try:
-        aq_request = convert_claude_to_amazonq_request(req, conversation_id=requested_conversation_id)
+        aq_request = convert_claude_to_amazonq_request(req, conversation_id=None)
     except Exception as e:
         traceback.print_exc()
         raise HTTPException(status_code=400, detail=f"Request conversion failed: {str(e)}")

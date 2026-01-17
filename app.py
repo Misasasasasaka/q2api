@@ -169,8 +169,8 @@ async def _init_global_client():
     # max_keepalive_connections: 保持活跃的连接数
     # keepalive_expiry: 连接保持时间
     limits = httpx.Limits(
-        max_keepalive_connections=500,
-        max_connections=500,  # 提高到500以支持更高并发
+        max_keepalive_connections=5000,
+        max_connections=5000,  # 提高到5000以支持更高并发
         keepalive_expiry=1.0  # 30秒后释放空闲连接
     )
     # 为流式响应设置更长的超时
@@ -218,8 +218,8 @@ async def _recycle_global_client():
                     }
             
             limits = httpx.Limits(
-                max_keepalive_connections=500,
-                max_connections=500,
+                max_keepalive_connections=5000,
+                max_connections=5000,
                 keepalive_expiry=1.0
             )
             timeout = httpx.Timeout(

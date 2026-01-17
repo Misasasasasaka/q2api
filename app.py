@@ -240,11 +240,21 @@ async def _recycle_global_client():
                         await asyncio.sleep(120)  # 等待2分钟
                         # 强制关闭，不等待正在进行的请求
                         try:
-                            # 直接关闭底层传输，不等待优雅关闭
+                            # 方式1: 直接关闭底层传输，更激进
+                            if hasattr(old_client, '_transport'):
+                                for transport in getattr(old_client._transport, '_pool', []):
+                                    try:
+                                        transport.close()
+                                    except:
+                                        pass
+                            
+                            # 方式2: 使用超时的aclose
                             await asyncio.wait_for(old_client.aclose(), timeout=1.0)
                             logger.info("[连接回收] 旧客户端已强制关闭")
                         except asyncio.TimeoutError:
-                            logger.warning("[连接回收] 旧客户端关闭超时，已放弃等待")
+                            logger.warning("[连接回收] 旧客户端关闭超时，已强制终止底层连接")
+                            # 超时后直接删除引用，让GC回收
+                            del old_client
                         except Exception as e:
                             logger.warning(f"[连接回收] 强制关闭旧客户端时出错: {e}")
                     except Exception as e:
